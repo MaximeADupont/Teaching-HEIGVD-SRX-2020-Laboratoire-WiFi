@@ -155,7 +155,10 @@ Nous utiliserons Wireshark pour trouver l’authentification WPA contenue dans l
 
 > **_Fournir une capture d'écran des chiffres aléatoires_**
 > 
-> **_Capture ici_** 
+> On peut observer deux nonces différentes parmis les 4 messages, ils dépendent de l'envoyeur : 
+>![](images/WPA1.PNG)
+![](images/WPA2.PNG)
+
 
 ---
 
@@ -171,28 +174,37 @@ Nous allons nous servir de l’outil aircrack-ng et d’un dictionnaire pour ret
 aircrack-ng <nom-du-fichier-capture> -w <nom-du-dictionnaire>
 ```
 
+
+> ![](images/WPA3.PNG)   
+On selectionne Hotspot puisque parmis les réseaux qui utilisent l'encryption WPA, c'est le seul pour lequel on possède un handshake.
+
 * Configurer la passphrase WPA dans Wireshark afin de déchiffrer le trafic (utiliser les exemples de la partie WEP comme guide. Sélectionnez « wpa-pwd » comme type de clé)
 
 * Répondre aux questions suivantes :
 
 > **_Question :_** Combien de temps avez-vous attendu pour obtenir la passphrase WPA ?
 > 
-> **_Réponse :_** 
+> **_Réponse :_** Environ 20 à 30 secondes.
 
 ---
 > **_Montrer une capture d'écran de l'obtention de la passphrase WPA_**
 > 
-> **_Capture ici_** 
+> ![](images/WPA4.PNG)
+
 
 ---
 > **_Question :_** Lors de la capture, la cible a fait un « ping » sur un serveur. Arrivez-vous à dire de quel serveur il s’agit ?
 
 > 
-> **_Réponse :_** 
-> 
-> Adresse IP du serveur : ?
+> **_Réponse :_**  On applique le filtre ICMP et on peut observer deux pings vers le meme serveur (echo request et echo reply) : 
+![](images/WPA5.PNG)
 >
-> Nom de Domaine : ?
+>
+> On peut voir l'addresse IP du serveur directement sur la capture.
+> Adresse IP du serveur : 31.13.64.35
+>
+> On peut maintenant entrer cette addresse dans notre navigateur, qui nous redirige vers facebook
+> Nom de Domaine : `facebook.com`
 
 
 
@@ -204,11 +216,13 @@ Nous avons enlevé une seule trame (choisie stratégiquement) du fichier de capt
 
 > **_Question :_** Est-ce que vous arrivez à refaire l'exercice ? Pourquoi ou pourquoi pas ?
 > 
-> **_Réponse :_** 
+> **_Réponse :_** Non, aircrack n'accepte pas le fichier, il n'arrive pas à detecter des réseaux dans ce fichier. 
 
 ---
 > **_Question :_** Sur la base de votre réponse précédente, arrivez-vous à déduire quelle trame a été effacée ?
 
 > 
 > **_Réponse :_** 
+![](images/WPA6.PNG)
+On voit que le paquet numéro 2 du handshake a été effacé.
 > 
