@@ -1,5 +1,7 @@
 # Teaching-HEIGVD-SRX-2020-Laboratoire-WiFi
 
+#### Authors : Dupont Maxime, Florian Mulhauser
+
 Vous aurez besoin de ``Wireshark`` et du logiciel ``aircrack-ng`` pour ce laboratoire. 
 
 Si vous utilisez une distribution Kali, tout est déjà pré-installé. Pour la version Windows du logiciel ``aircrack-ng``ou pour son installation sur d'autres distributions, référez-vous au
@@ -42,22 +44,27 @@ Nous savons que la cible s’est hébergée à l’hôtel « Black Rain » et qu
 
 > **_Question :_** Quel filtre avez-vous utilisé
 > 
-> **_Réponse :_** 
+> **_Réponse :_**  Filter Probe Request : `wlan.fc.type_subtype == 4` Source : https://www.semfionetworks.com/uploads/2/9/8/3/29831147/wireshark_802.11_filters_-_reference_sheet.pdf
 
 ---
 > **_Question :_** Quel est l’adresse MAC de la cible ?
 > 
-> **_Réponse :_** 
+> **_Réponse :_**  On sait que la cible a été dans l'hotel blackrain, on cherche donc parmis les strings contenant blackrain et on peut voir qu'il n'y en a qu'une seule, on peut donc regarder directement dans le packet pour trouver l'addresse MAC de la source , et on voit sur cette capture que l'addresse est : `fc:f1:36:22:49:74`.
+![](images/Intro2.PNG)
+
 
 ---
 > **_Question :_** Quel est le nom du constructeur de l’interface sans fils de la cible ?
 > 
-> **_Réponse :_** 
+> **_Réponse :_**  Comme on peut le voir sur la capture du dessus, le constructeur de l'interface sans fils de la cible est Samsung.
 
 ---
 > **_Question :_** Quel autres endroits la cible a-t-elle probablement visités ?
 > 
-> **_Réponse :_** 
+> **_Réponse :_** Il faut maintenant chercher les probe request venant de l'addresse MAC de la cible : 
+![](images/Intro4.PNG)  
+Et ainsi on voit qu'en plus de l'hôtel, la cible a visité Fleur de Pains (probablement une boulangerie), L'aréoport de genève (GVA Airport Wifi), Une MIGROS ansin qu'un starbucks.
+
 
 ---
 
@@ -83,6 +90,9 @@ Nous allons nous servir de l’outil ``aircrack-ng`` pour retrouver la clé de c
 aircrack-ng <nom-du-fichier-capture>
 ```
 
+
+
+
 Maintenant que vous avez la clé WEP, configurez la dans Wireshark afin de déchiffrer le trafic (en fonction de la version de Wireshark, ces images peuvent varier légèrement) :
 
 * Ouvrir les préférences de Wireshark et localiser l’option « Protocols »
@@ -99,21 +109,26 @@ Maintenant que vous avez la clé WEP, configurez la dans Wireshark afin de déch
 
 * Essayez à nouveau de lire le contenu de la capture. Utilisez encore une fois des filtres de protocoles connus (http, icmp). Est-ce que vous arrivez à trouver des trames contenant ces protocoles cette fois-ci ?
 
+> Oui, sans soucis.
+
 * Répondre aux questions suivantes :
 
 > **_Question :_** Combien de temps avez-vous attendu pour obtenir la clé WEP ?
 > 
-> **_Réponse :_** 
+> **_Réponse :_** Même pas une seconde.
 
 ---
 > **_Montrer une capture d'écran de l'obtention de la clé WEP_**
 > 
-> **_Capture ici_** 
+>![](images/WEP1.PNG)
 
 ---
 > **_Question :_** Arrivez-vous à récupérer les informations d’identification (credentials) de l’authentification basique http contenue dans la capture ?
 > 
-> **_Réponse :_** 
+> **_Réponse :_**  On recherche une requete http dans notre capture, ici la première trame est completement valable, et lorsque l'on observe le contenu du http dans la trame, on peut voir les identifiants sous l'authorisation (`admin:admin`) : 
+
+![](images/WEP%203.PNG)
+
 
 ---
 
